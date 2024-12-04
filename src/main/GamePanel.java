@@ -9,10 +9,10 @@ import javax.swing.JPanel;
 
 public class GamePanel extends JPanel implements Runnable {
 
-  static final int WIDTH = 525;
-  static final int HEIGHT = 525;
+  static final int WIDTH = 500;
+  static final int HEIGHT = 500;
 public static Object g;
-  private final int FPS = 60;
+  private final int FPS = 200;
 
   private Thread gameThread;
   private GameManager gameManager;

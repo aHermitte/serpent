@@ -11,9 +11,9 @@ import snake.Snake;
 
 public class GameManager {
 
-  final int WIDTH = 450;
-  final int HEIGHT = 450;
+  public final static int WIDTH = 450;
   static int border_left, border_right, border_top, border_bottom;
+  public static final int SCALE = 30;
 
   private int score = 0;
   private int highscore = 0;
@@ -22,29 +22,28 @@ public class GameManager {
   private LinkedList<Fruit> fruits = new LinkedList<Fruit>();
 
   public GameManager() {
-    border_left = (GamePanel.WIDTH / 2) - (WIDTH / 2);
-    border_right = (GamePanel.WIDTH / 2) + (WIDTH / 2);
-    border_top = (GamePanel.HEIGHT / 2) - (HEIGHT / 2);
-    border_bottom = (GamePanel.HEIGHT / 2) + (HEIGHT / 2);
+    border_left = SCALE;
+    border_right = SCALE * 15;
+    border_top = SCALE;
+    border_bottom = SCALE * 15;
 
-    snake = new Snake(225, 225, Color.GREEN);
-    Fruit fruit = new Fruit(225, 225);
-    fruits.add(fruit);
+    snake = new Snake(5 * SCALE, 7 * SCALE, Color.GREEN);
+
+    fruits.add(new Fruit(10 * SCALE, 7 * SCALE));
   }
 
   public void update() {
-    snake.update();
-    fruits.forEach(fruit -> {
-      if (snake.body.getFirst().intersects(fruit)) {
-        score++;
-        if (score > highscore) {
-          highscore = score;
-        }
-        snake.grow();
-        fruits.remove(fruit);
-        fruits.add(new Fruit((int) (Math.random() * WIDTH) + border_left, (int) (Math.random() * HEIGHT) + border_top));
-      }
-    });
+    boolean isGameOver = snake.update(fruits);
+    score = snake.body.size() - 1;
+    if (score > highscore) {
+      highscore = score;
+    }
+    if (isGameOver) {
+      score = 0;
+      snake = new Snake(5 * SCALE, 7 * SCALE, Color.GREEN);
+      fruits.forEach(fruit -> fruit.respawn());
+      InputHandler.reset();
+    }
   }
 
   public void draw(Graphics2D g) {
@@ -52,7 +51,8 @@ public class GameManager {
 
     int wall_thickness = 5;
     g.setStroke(new BasicStroke(wall_thickness));
-    g.drawRect(border_left - wall_thickness, border_top - wall_thickness, WIDTH + 2 * wall_thickness, HEIGHT + 2 * wall_thickness);
+    g.drawRect(border_left - wall_thickness, border_top - wall_thickness, border_right + wall_thickness + 4,
+        border_bottom + wall_thickness + 4);
 
     g.setFont(new Font("Arial", Font.PLAIN, 20));
     g.setRenderingHint(java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON);

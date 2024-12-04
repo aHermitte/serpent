@@ -27,31 +27,42 @@ public class InputHandler implements KeyListener {
   }
 
   private void toggleUp() {
-    DOWN_PRESSED = false;
-    LEFT_PRESSED = false;
-    RIGHT_PRESSED = false;
+    if (DOWN_PRESSED) {
+      return;
+    }
+    reset();
     UP_PRESSED = true;
   }
 
   private void toggleDown() {
-    UP_PRESSED = false;
-    LEFT_PRESSED = false;
-    RIGHT_PRESSED = false;
+    if (UP_PRESSED) {
+      return;
+    }
+    reset();
     DOWN_PRESSED = true;
   }
 
   private void toggleLeft() {
-    UP_PRESSED = false;
-    DOWN_PRESSED = false;
-    RIGHT_PRESSED = false;
+    if (RIGHT_PRESSED) {
+      return;
+    }
+    reset();
     LEFT_PRESSED = true;
   }
 
   private void toggleRight() {
+    if (LEFT_PRESSED) {
+      return;
+    }
+    reset();
+    RIGHT_PRESSED = true;
+  }
+
+  public static void reset() {
     UP_PRESSED = false;
     DOWN_PRESSED = false;
     LEFT_PRESSED = false;
-    RIGHT_PRESSED = true;
+    RIGHT_PRESSED = false;
   }
 
   @Override

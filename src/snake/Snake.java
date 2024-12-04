@@ -10,11 +10,11 @@ public class Snake {
   public LinkedList<Drawable> body = new LinkedList<Drawable>();
 
   enum Direction {
-    UP, DOWN, LEFT, RIGHT
+    UP, DOWN, LEFT, RIGHT, NONE
   }
 
-  private Direction direction = Direction.RIGHT;
-  private double speed = 1;
+  private Direction direction = Direction.NONE;
+  private double speed = 0.9;
   private long lastMoveTime = System.nanoTime();
   private double moveDelay = 100000000 / speed;
   private int grow = 0;
@@ -36,9 +36,9 @@ public class Snake {
     grow += 1;
   }
 
-  public void update() {
+  public boolean update(LinkedList<Fruit> fruits) {
     if (!shouldMove()) {
-      return;
+      return false;
     }
     int x = body.getFirst().x;
     int y = body.getFirst().y;
@@ -67,6 +67,36 @@ public class Snake {
     } else {
       body.removeLast();
     }
+
+    return checkCollision(x, y, fruits);
+  }
+
+  private boolean checkCollision(int x, int y, LinkedList<Fruit> fruits) {
+    // WALLS
+    if (x < 30 || x > 450 || y < 30 || y > 450) {
+      System.out.println("Game Over !");
+      return true;
+    }
+
+    // FRUITS
+    for (Fruit f : fruits) {
+      if (f.x == x && f.y == y) {
+        f.respawn();
+        System.out.println("Fruit eaten !");
+
+        grow();
+      }
+    }
+
+    // SELF
+    for (int i = 1; i < body.size(); i++) {
+      if (body.get(i).x == x && body.get(i).y == y) {
+        System.out.println("Game Over !");
+        return true;
+      }
+    }
+
+    return false;
   }
 
   public void draw(Graphics2D g) {

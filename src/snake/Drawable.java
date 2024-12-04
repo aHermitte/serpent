@@ -4,10 +4,12 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
+import main.GameManager;
+
 public class Drawable extends Rectangle {
   int x;
   int y;
-  public static final int SIZE = 15;
+  public static final int SIZE = GameManager.WIDTH / 15;
   public Color c;
 
   public Drawable(int x, int y, Color c) {
