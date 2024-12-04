@@ -1,0 +1,5 @@
+# Serpent
+
+```bash 
+make run
+```
