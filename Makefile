@@ -20,6 +20,9 @@ $(JAR_FILE): $(SOURCES)
 run: $(JAR_FILE)
 	java -jar $(JAR_FILE)
 
+solo: $(JAR_FILE)
+	git checkout main
+	make run 
 # Clean build artifacts
 clean:
 	rm -rf $(BUILD_DIR)
