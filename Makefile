@@ -20,8 +20,12 @@ $(JAR_FILE): $(SOURCES)
 run: $(JAR_FILE)
 	java -jar $(JAR_FILE)
 
+duo: $(JAR_FILE)
+	git checkout duo
+	make run
+
 # Clean build artifacts
 clean:
 	rm -rf $(BUILD_DIR)
 
-.PHONY: all run clean
+.PHONY: all run clean duo
