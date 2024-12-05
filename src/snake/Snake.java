@@ -62,12 +62,20 @@ public class Snake {
     }
 
     switch (direction) {
-      case UP -> y -= Drawable.SIZE;
-      case DOWN -> y += Drawable.SIZE;
-      case LEFT -> x -= Drawable.SIZE;
-      case RIGHT -> x += Drawable.SIZE;
-      case NONE -> {
-      }
+      case UP:
+        y -= Drawable.SIZE;
+        break;
+      case DOWN:
+        y += Drawable.SIZE;
+        break;
+      case LEFT:
+        x -= Drawable.SIZE;
+        break;
+      case RIGHT:
+        x += Drawable.SIZE;
+        break;
+      case NONE:
+        break;
     }
 
     body.addFirst(new Drawable(x, y, color));
@@ -107,7 +115,7 @@ public class Snake {
       }
     }
 
-    //Other snakes
+    // Other snakes
     if (s != null && !s.dead) {
       for (Drawable d : s.body) {
         if (d.x == x && d.y == y) {
