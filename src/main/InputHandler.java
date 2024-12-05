@@ -8,13 +8,12 @@ public class InputHandler implements KeyListener {
   public enum Direction {
     UP, DOWN, LEFT, RIGHT, NONE
   }
-
   private static LinkedList<Direction> directions1 = new LinkedList<Direction>();
   private static LinkedList<Direction> directions2 = new LinkedList<Direction>();
-  private Direction lastDirection1 = Direction.NONE;
-  private Direction lastDirection2 = Direction.NONE;
-
+  private static Direction lastDirection1 = Direction.NONE;
+  private static Direction lastDirection2 = Direction.NONE;
   private static boolean paused = false;
+  private static boolean gameOver = false;
 
   public InputHandler() {
     System.out.println("InputHandler initialized !");
@@ -36,6 +35,7 @@ public class InputHandler implements KeyListener {
           directions1.add(Direction.LEFT);
           lastDirection1 = Direction.RIGHT;
           directions2.add(Direction.RIGHT);
+         
         }
       }
       case KeyEvent.VK_Q -> {
@@ -97,6 +97,23 @@ public class InputHandler implements KeyListener {
 
   public static boolean isPaused() {
     return paused;
+  }
+
+  public static void reset() {
+    gameOver = false;
+    directions1.clear();
+    directions2.clear();
+    lastDirection1 = Direction.NONE;
+    lastDirection2 = Direction.NONE;
+  }
+
+  public static void setEndOfGame() {
+    paused = true;
+    gameOver = true;
+  }
+
+  public static boolean isGameOver() {
+    return gameOver;
   }
 
   @Override

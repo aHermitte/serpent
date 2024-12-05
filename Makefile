@@ -23,8 +23,13 @@ run: $(JAR_FILE)
 solo: $(JAR_FILE)
 	git checkout main
 	make run 
+
+duo: $(JAR_FILE)
+	git checkout duo
+	make run
+
 # Clean build artifacts
 clean:
 	rm -rf $(BUILD_DIR)
 
-.PHONY: all run clean
+.PHONY: all run clean duo solo
