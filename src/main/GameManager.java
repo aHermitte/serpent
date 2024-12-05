@@ -17,7 +17,7 @@ public class GameManager {
   private int wall_thickness = 5;
 
   private int score = 0;
-  private int highscore = 0;
+  private int score2 = 0;
 
   private Snake snake;
   private Snake snake2;
@@ -41,10 +41,6 @@ public class GameManager {
     if (InputHandler.isPaused()) {
       return;
     }
-    is1Dead = snake.update(fruits, snake2);
-    is2Dead = snake2.update(fruits, snake);
-    boolean isGameOver = is1Dead && is2Dead;
-    score = snake.body.size() - 1;
     if (InputHandler.isGameOver()) {
       InputHandler.reset();
       score = 0;
@@ -52,10 +48,13 @@ public class GameManager {
       snake2 = new Snake(5 * SCALE, 10 * SCALE, 2, Color.BLUE, 2);
       fruits.forEach(fruit -> fruit.respawn());
     }
+    
     score = snake.body.size() - 1 - Snake.START_SIZE;
-    if (score > highscore) {
-      highscore = score;
-    }
+    score2 = snake2.body.size() - 1 - Snake.START_SIZE;
+    is1Dead = snake.update(fruits, snake2);
+    is2Dead = snake2.update(fruits, snake);
+
+    boolean isGameOver = is1Dead && is2Dead;
     if (isGameOver) {
       InputHandler.setEndOfGame();
     }
@@ -70,8 +69,8 @@ public class GameManager {
 
     g.setFont(new Font("Arial", Font.PLAIN, 20));
     g.setRenderingHint(java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON);
-    g.drawString("Score: " + score, 20, 20);
-    g.drawString("Highscore: " + highscore, 370, 20);
+    g.drawString("Green: " + score, 20, 20);
+    g.drawString("Blue: " + score2, 370, 20);
 
     snake.draw(g);
     snake2.draw(g);
@@ -103,8 +102,8 @@ public class GameManager {
       g.drawString("Paused", 205, 120);
       g.drawString("ESC : resume", 101, 300);
     }
-    g.drawString("Score: " + score, 110, 200);
-    g.drawString("Highscore: " + highscore, 244, 200);
+    g.drawString("Green score: " + score, 110, 200);
+    g.drawString("Blue score : " + score2, 110, 250);
     g.drawString("Q : quit", 140, 350);
     g.drawString("R : start a new game", 140, 400);
   }

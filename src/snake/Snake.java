@@ -108,7 +108,7 @@ public class Snake {
     }
 
     //Other snakes
-    if (s != null) {
+    if (s != null && !s.dead) {
       for (Drawable d : s.body) {
         if (d.x == x && d.y == y) {
           System.out.println("Don't eat the other snake!");
