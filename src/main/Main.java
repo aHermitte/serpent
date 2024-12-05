@@ -8,7 +8,7 @@ public class Main extends JFrame {
   }
 
   public Main() {
-    JFrame frame = new JFrame("Serpent");
+    JFrame frame = new JFrame("");
 
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     frame.setResizable(false);

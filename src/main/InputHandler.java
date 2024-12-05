@@ -24,11 +24,20 @@ public class InputHandler implements KeyListener {
       case KeyEvent.VK_DOWN -> addDirection(Direction.DOWN);
       case KeyEvent.VK_LEFT -> addDirection(Direction.LEFT);
       case KeyEvent.VK_RIGHT -> addDirection(Direction.RIGHT);
-      case KeyEvent.VK_Z -> addDirection(Direction.UP);
-      case KeyEvent.VK_S -> addDirection(Direction.DOWN);
-      case KeyEvent.VK_Q -> addDirection(Direction.LEFT);
-      case KeyEvent.VK_D -> addDirection(Direction.RIGHT);
       case KeyEvent.VK_ESCAPE -> paused = !paused;
+      case KeyEvent.VK_R -> {
+        if (paused) {
+          paused = false;
+          directions.add(Direction.RIGHT);
+          directions.add(Direction.LEFT);
+        }
+      }
+      case KeyEvent.VK_Q -> {
+        if (paused) {
+          System.exit(0);
+        }
+      }
+
     }
   }
 
