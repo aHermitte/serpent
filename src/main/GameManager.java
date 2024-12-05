@@ -20,7 +20,10 @@ public class GameManager {
   private int highscore = 0;
 
   private Snake snake;
+  private Snake snake2;
   private LinkedList<Fruit> fruits = new LinkedList<Fruit>();
+  boolean is1Alive = true;
+  boolean is2Alive = true;
 
   public GameManager() {
     border_left = SCALE;
@@ -28,7 +31,8 @@ public class GameManager {
     border_top = SCALE;
     border_bottom = SCALE * 15;
 
-    snake = new Snake(5 * SCALE, 7 * SCALE);
+    snake = new Snake(5 * SCALE, 7 * SCALE, 1, Color.GREEN);
+    snake2 = new Snake(10 * SCALE, 7 * SCALE, 2, Color.BLUE);
 
     fruits.add(new Fruit(10 * SCALE, 7 * SCALE));
   }
@@ -38,14 +42,18 @@ public class GameManager {
       return;
     }
 
-    boolean isGameOver = snake.update(fruits);
+    is1Alive = snake.update(fruits);
+    is2Alive = snake2.update(fruits);
+    boolean isGameOver = is1Alive && is2Alive;
     score = snake.body.size() - 1;
     if (score > highscore) {
       highscore = score;
     }
     if (isGameOver) {
+      System.out.println("Game Over !");
       score = 0;
-      snake = new Snake(5 * SCALE, 7 * SCALE);
+      snake = new Snake(5 * SCALE, 7 * SCALE, 1, Color.GREEN);
+      snake2 = new Snake(10 * SCALE, 7 * SCALE, 2, Color.BLUE);
       fruits.forEach(fruit -> fruit.respawn());
     }
   }
@@ -63,6 +71,7 @@ public class GameManager {
     g.drawString("Highscore: " + highscore, 370, 20);
 
     snake.draw(g);
+    snake2.draw(g);
     fruits.forEach(fruit -> fruit.draw(g));
 
     if (InputHandler.isPaused()) {

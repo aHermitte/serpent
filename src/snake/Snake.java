@@ -16,12 +16,16 @@ public class Snake {
   private double moveDelay = 100000000;
   private final static int START_SIZE = 4;
   private int grow = 0;
+  private int pid;
+  private Color color;
 
-  public Snake(int x, int y) {
-    body.add(new Drawable(x, y, Color.BLUE));
+  public Snake(int x, int y, int pid, Color color) {
+    body.add(new Drawable(x, y, color));
     for (int i = 0; i < START_SIZE; i++) {
-      body.add(new Drawable(x, y, Color.BLUE));
+      body.add(new Drawable(x, y, color));
     }
+    this.pid = pid;
+    this.color = color;
   }
 
   private boolean shouldMove() {
@@ -47,7 +51,7 @@ public class Snake {
     int x = body.getFirst().x;
     int y = body.getFirst().y;
 
-    Direction dir = InputHandler.getDirection();
+    Direction dir = InputHandler.getDirection(pid);
     if (dir != Direction.NONE) {
       direction = dir;
     }
@@ -61,7 +65,7 @@ public class Snake {
       }
     }
 
-    body.addFirst(new Drawable(x, y, Color.BLUE));
+    body.addFirst(new Drawable(x, y, color));
 
     if (grow > 0) {
       grow--;
