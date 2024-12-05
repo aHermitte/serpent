@@ -9,8 +9,9 @@ public class InputHandler implements KeyListener {
     UP, DOWN, LEFT, RIGHT, NONE
   }
   private static  LinkedList<Direction> directions = new LinkedList<Direction>();
-  private Direction lastDirection = Direction.NONE;
+  private static Direction lastDirection = Direction.NONE;
   private static boolean paused = false;
+  private static boolean gameOver = false;
 
   public InputHandler() {
     System.out.println("InputHandler initialized !");
@@ -71,6 +72,21 @@ public class InputHandler implements KeyListener {
 
   public static  boolean isPaused() {
     return paused;
+  }
+
+  public static void reset() {
+    gameOver = false;
+    directions.clear();
+    lastDirection = Direction.NONE;
+  }
+
+  public static void setEndOfGame() {
+    paused = true;
+    gameOver = true;
+  }
+
+  public static boolean isGameOver() {
+    return gameOver;
   }
 
   @Override

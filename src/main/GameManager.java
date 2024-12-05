@@ -37,16 +37,20 @@ public class GameManager {
     if (InputHandler.isPaused()) {
       return;
     }
-
+    if (InputHandler.isGameOver()) {
+      InputHandler.reset();
+      score = 0;
+      snake = new Snake(5 * SCALE, 7 * SCALE);
+      fruits.forEach(fruit -> fruit.respawn());
+    }
     boolean isGameOver = snake.update(fruits);
-    score = snake.body.size() - 1;
+    score = snake.body.size() - 1 - snake.START_SIZE;
     if (score > highscore) {
       highscore = score;
     }
     if (isGameOver) {
-      score = 0;
-      snake = new Snake(5 * SCALE, 7 * SCALE);
-      fruits.forEach(fruit -> fruit.respawn());
+      InputHandler.setEndOfGame();
+
     }
   }
 
@@ -83,9 +87,17 @@ public class GameManager {
 
     g.setFont(new Font("Arial", Font.PLAIN, 30));
     g.setRenderingHint(java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON);
-    g.drawString("Paused", 205, 120);
-    g.drawString("ESC : resume", 101, 200);
-    g.drawString("Q : quit", 140, 250);
-    g.drawString("R : start a new game", 140, 300);
+    if (InputHandler.isGameOver()) {
+      g.drawString("Game Over", 160, 120);
+      g.drawString("ESC : play", 101, 300);
+
+    } else {
+      g.drawString("Paused", 205, 120);
+      g.drawString("ESC : resume", 101, 300);
+    }
+    g.drawString("Score: " + score, 110, 200);
+    g.drawString("Highscore: " + highscore, 244, 200);
+    g.drawString("Q : quit", 140, 350);
+    g.drawString("R : start a new game", 140, 400);
   }
 }

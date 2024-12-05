@@ -14,7 +14,7 @@ public class Snake {
   private double speed = 0.9;
   private long lastMoveTime = System.nanoTime();
   private double moveDelay = 100000000;
-  private final static int START_SIZE = 4;
+  public final static int START_SIZE = 4;
   private int grow = 0;
 
   public Snake(int x, int y) {
