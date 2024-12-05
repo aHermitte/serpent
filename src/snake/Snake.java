@@ -18,14 +18,16 @@ public class Snake {
   private int grow = 0;
   private int pid;
   private Color color;
+  private boolean dead;
 
-  public Snake(int x, int y, int pid, Color color) {
+  public Snake(int x, int y, int pid, Color color, int snakes_count) {
     body.add(new Drawable(x, y, color));
     for (int i = 0; i < START_SIZE; i++) {
       body.add(new Drawable(x, y, color));
     }
     this.pid = pid;
     this.color = color;
+    this.dead = false;
   }
 
   private boolean shouldMove() {
@@ -44,7 +46,10 @@ public class Snake {
     }
   }
 
-  public boolean update(LinkedList<Fruit> fruits) {
+  public boolean update(LinkedList<Fruit> fruits, Snake s) {
+    if (dead) {
+      return true;
+    }
     if (!shouldMove()) {
       return false;
     }
@@ -73,10 +78,11 @@ public class Snake {
       body.removeLast();
     }
 
-    return checkCollision(x, y, fruits);
+    dead = checkCollision(x, y, fruits, s);
+    return dead;
   }
 
-  private boolean checkCollision(int x, int y, LinkedList<Fruit> fruits) {
+  private boolean checkCollision(int x, int y, LinkedList<Fruit> fruits, Snake s) {
     // WALLS
     if (x < 30 || x > 450 || y < 30 || y > 450) {
       System.out.println("Stay in the map !");
@@ -101,10 +107,23 @@ public class Snake {
       }
     }
 
+    //Other snakes
+    if (s != null) {
+      for (Drawable d : s.body) {
+        if (d.x == x && d.y == y) {
+          System.out.println("Don't eat the other snake!");
+          return true;
+        }
+      }
+    }
+
     return false;
   }
 
   public void draw(Graphics2D g) {
+    if (dead) {
+      return;
+    }
     for (Drawable d : body) {
       d.draw(g);
     }

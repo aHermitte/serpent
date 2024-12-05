@@ -34,6 +34,8 @@ public class InputHandler implements KeyListener {
           paused = false;
           directions1.add(Direction.RIGHT);
           directions1.add(Direction.LEFT);
+          lastDirection1 = Direction.RIGHT;
+          directions2.add(Direction.RIGHT);
         }
       }
       case KeyEvent.VK_Q -> {
