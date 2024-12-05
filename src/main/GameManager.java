@@ -44,7 +44,7 @@ public class GameManager {
       fruits.forEach(fruit -> fruit.respawn());
     }
     boolean isGameOver = snake.update(fruits);
-    score = snake.body.size() - 1 - snake.START_SIZE;
+    score = snake.body.size() - 1 - Snake.START_SIZE;
     if (score > highscore) {
       highscore = score;
     }

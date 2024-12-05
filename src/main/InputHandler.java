@@ -8,7 +8,8 @@ public class InputHandler implements KeyListener {
   public enum Direction {
     UP, DOWN, LEFT, RIGHT, NONE
   }
-  private static  LinkedList<Direction> directions = new LinkedList<Direction>();
+
+  private static LinkedList<Direction> directions = new LinkedList<Direction>();
   private static Direction lastDirection = Direction.NONE;
   private static boolean paused = false;
   private static boolean gameOver = false;
@@ -21,24 +22,34 @@ public class InputHandler implements KeyListener {
   public void keyPressed(KeyEvent e) {
     int key = e.getKeyCode();
     switch (key) {
-      case KeyEvent.VK_UP -> addDirection(Direction.UP);
-      case KeyEvent.VK_DOWN -> addDirection(Direction.DOWN);
-      case KeyEvent.VK_LEFT -> addDirection(Direction.LEFT);
-      case KeyEvent.VK_RIGHT -> addDirection(Direction.RIGHT);
-      case KeyEvent.VK_ESCAPE -> paused = !paused;
-      case KeyEvent.VK_R -> {
+      case KeyEvent.VK_UP:
+        addDirection(Direction.UP);
+        break;
+      case KeyEvent.VK_DOWN:
+        addDirection(Direction.DOWN);
+        break;
+      case KeyEvent.VK_LEFT:
+        addDirection(Direction.LEFT);
+        break;
+      case KeyEvent.VK_RIGHT:
+        addDirection(Direction.RIGHT);
+        break;
+      case KeyEvent.VK_ESCAPE:
+        paused = !paused;
+        break;
+      case KeyEvent.VK_R:
         if (paused) {
           paused = false;
           directions.add(Direction.RIGHT);
           directions.add(Direction.LEFT);
           lastDirection = Direction.RIGHT;
         }
-      }
-      case KeyEvent.VK_Q -> {
+        break;
+      case KeyEvent.VK_Q:
         if (paused) {
           System.exit(0);
         }
-      }
+        break;
 
     }
   }
@@ -70,7 +81,7 @@ public class InputHandler implements KeyListener {
     return directions.removeFirst();
   }
 
-  public static  boolean isPaused() {
+  public static boolean isPaused() {
     return paused;
   }
 
