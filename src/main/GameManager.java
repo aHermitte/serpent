@@ -33,6 +33,10 @@ public class GameManager {
   }
 
   public void update() {
+    if (InputHandler.isPaused()) {
+      return;
+    }
+
     boolean isGameOver = snake.update(fruits);
     score = snake.body.size() - 1;
     if (score > highscore) {
@@ -47,6 +51,12 @@ public class GameManager {
 
   public void draw(Graphics2D g) {
     g.setColor(Color.WHITE);
+
+    if (InputHandler.isPaused()) {
+      g.setFont(new Font("Arial", Font.PLAIN, 50));
+      g.drawString("PAUSED", 150, 250);
+      return;
+    }
 
     int wall_thickness = 5;
     g.setStroke(new BasicStroke(wall_thickness));

@@ -10,6 +10,7 @@ public class InputHandler implements KeyListener {
   }
   private static  LinkedList<Direction> directions = new LinkedList<Direction>();
   private Direction lastDirection = Direction.NONE;
+  private static boolean paused = false;
 
   public InputHandler() {
     System.out.println("InputHandler initialized !");
@@ -27,10 +28,14 @@ public class InputHandler implements KeyListener {
       case KeyEvent.VK_S -> addDirection(Direction.DOWN);
       case KeyEvent.VK_Q -> addDirection(Direction.LEFT);
       case KeyEvent.VK_D -> addDirection(Direction.RIGHT);
+      case KeyEvent.VK_ESCAPE -> paused = !paused;
     }
   }
 
   private void addDirection(Direction d) {
+    if (paused) {
+      return;
+    }
     if (d == Direction.UP && lastDirection == Direction.DOWN) {
       return;
     }
@@ -52,6 +57,10 @@ public class InputHandler implements KeyListener {
       return Direction.NONE;
     }
     return directions.removeFirst();
+  }
+
+  public static  boolean isPaused() {
+    return paused;
   }
 
   @Override
