@@ -27,7 +27,7 @@ public class GameManager {
     border_top = SCALE;
     border_bottom = SCALE * 15;
 
-    snake = new Snake(5 * SCALE, 7 * SCALE, Color.GREEN);
+    snake = new Snake(5 * SCALE, 7 * SCALE);
 
     fruits.add(new Fruit(10 * SCALE, 7 * SCALE));
   }
@@ -40,9 +40,8 @@ public class GameManager {
     }
     if (isGameOver) {
       score = 0;
-      snake = new Snake(5 * SCALE, 7 * SCALE, Color.GREEN);
+      snake = new Snake(5 * SCALE, 7 * SCALE);
       fruits.forEach(fruit -> fruit.respawn());
-      InputHandler.reset();
     }
   }
 

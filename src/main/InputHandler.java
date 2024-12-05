@@ -2,16 +2,16 @@ package main;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.LinkedList;
 
 public class InputHandler implements KeyListener {
-  public static boolean UP_PRESSED, DOWN_PRESSED, LEFT_PRESSED, RIGHT_PRESSED = false;
+  public enum Direction {
+    UP, DOWN, LEFT, RIGHT, NONE
+  }
+  private static  LinkedList<Direction> directions = new LinkedList<Direction>();
+  private Direction lastDirection = Direction.NONE;
 
   public InputHandler() {
-    UP_PRESSED = false;
-    DOWN_PRESSED = false;
-    LEFT_PRESSED = false;
-    RIGHT_PRESSED = false;
-
     System.out.println("InputHandler initialized !");
   }
 
@@ -19,50 +19,39 @@ public class InputHandler implements KeyListener {
   public void keyPressed(KeyEvent e) {
     int key = e.getKeyCode();
     switch (key) {
-      case KeyEvent.VK_UP -> toggleUp();
-      case KeyEvent.VK_DOWN -> toggleDown();
-      case KeyEvent.VK_LEFT -> toggleLeft();
-      case KeyEvent.VK_RIGHT -> toggleRight();
+      case KeyEvent.VK_UP -> addDirection(Direction.UP);
+      case KeyEvent.VK_DOWN -> addDirection(Direction.DOWN);
+      case KeyEvent.VK_LEFT -> addDirection(Direction.LEFT);
+      case KeyEvent.VK_RIGHT -> addDirection(Direction.RIGHT);
+      case KeyEvent.VK_Z -> addDirection(Direction.UP);
+      case KeyEvent.VK_S -> addDirection(Direction.DOWN);
+      case KeyEvent.VK_Q -> addDirection(Direction.LEFT);
+      case KeyEvent.VK_D -> addDirection(Direction.RIGHT);
     }
   }
 
-  private void toggleUp() {
-    if (DOWN_PRESSED) {
+  private void addDirection(Direction d) {
+    if (d == Direction.UP && lastDirection == Direction.DOWN) {
       return;
     }
-    reset();
-    UP_PRESSED = true;
-  }
-
-  private void toggleDown() {
-    if (UP_PRESSED) {
+    if (d == Direction.DOWN && lastDirection == Direction.UP) {
       return;
     }
-    reset();
-    DOWN_PRESSED = true;
-  }
-
-  private void toggleLeft() {
-    if (RIGHT_PRESSED) {
+    if (d == Direction.LEFT && lastDirection == Direction.RIGHT) {
       return;
     }
-    reset();
-    LEFT_PRESSED = true;
-  }
-
-  private void toggleRight() {
-    if (LEFT_PRESSED) {
+    if (d == Direction.RIGHT && lastDirection == Direction.LEFT) {
       return;
     }
-    reset();
-    RIGHT_PRESSED = true;
+    lastDirection = d;
+    directions.add(d);
   }
 
-  public static void reset() {
-    UP_PRESSED = false;
-    DOWN_PRESSED = false;
-    LEFT_PRESSED = false;
-    RIGHT_PRESSED = false;
+  public static Direction getDirection() {
+    if (directions.isEmpty()) {
+      return Direction.NONE;
+    }
+    return directions.removeFirst();
   }
 
   @Override

@@ -5,27 +5,28 @@ import java.awt.Graphics2D;
 import java.util.LinkedList;
 
 import main.InputHandler;
+import main.InputHandler.Direction;
 
 public class Snake {
   public LinkedList<Drawable> body = new LinkedList<Drawable>();
 
-  enum Direction {
-    UP, DOWN, LEFT, RIGHT, NONE
-  }
-
-  private Direction direction = Direction.NONE;
+  private Direction direction = Direction.RIGHT;
   private double speed = 0.9;
   private long lastMoveTime = System.nanoTime();
-  private double moveDelay = 100000000 / speed;
+  private double moveDelay = 100000000;
+  private final static int START_SIZE = 4;
   private int grow = 0;
 
-  public Snake(int x, int y, Color c) {
-    body.add(new Drawable(x, y, c));
+  public Snake(int x, int y) {
+    body.add(new Drawable(x, y, Color.BLUE));
+    for (int i = 0; i < START_SIZE; i++) {
+      body.add(new Drawable(x, y, Color.BLUE));
+    }
   }
 
   private boolean shouldMove() {
     long currentTime = System.nanoTime();
-    boolean sm = currentTime - lastMoveTime >= moveDelay;
+    boolean sm = currentTime - lastMoveTime >= moveDelay / speed;
     if (sm) {
       lastMoveTime = currentTime;
     }
@@ -34,6 +35,9 @@ public class Snake {
 
   public void grow() {
     grow += 1;
+    if (body.size() % 10 == 0) {
+      speed += 0.1;
+    }
   }
 
   public boolean update(LinkedList<Fruit> fruits) {
@@ -43,14 +47,9 @@ public class Snake {
     int x = body.getFirst().x;
     int y = body.getFirst().y;
 
-    if (InputHandler.UP_PRESSED) {
-      direction = Direction.UP;
-    } else if (InputHandler.DOWN_PRESSED) {
-      direction = Direction.DOWN;
-    } else if (InputHandler.LEFT_PRESSED) {
-      direction = Direction.LEFT;
-    } else if (InputHandler.RIGHT_PRESSED) {
-      direction = Direction.RIGHT;
+    Direction dir = InputHandler.getDirection();
+    if (dir != Direction.NONE) {
+      direction = dir;
     }
 
     switch (direction) {
@@ -58,9 +57,11 @@ public class Snake {
       case DOWN -> y += Drawable.SIZE;
       case LEFT -> x -= Drawable.SIZE;
       case RIGHT -> x += Drawable.SIZE;
+      case NONE -> {
+      }
     }
 
-    body.addFirst(new Drawable(x, y, Color.GREEN));
+    body.addFirst(new Drawable(x, y, Color.BLUE));
 
     if (grow > 0) {
       grow--;
@@ -74,7 +75,7 @@ public class Snake {
   private boolean checkCollision(int x, int y, LinkedList<Fruit> fruits) {
     // WALLS
     if (x < 30 || x > 450 || y < 30 || y > 450) {
-      System.out.println("Game Over !");
+      System.out.println("Stay in the map !");
       return true;
     }
 
@@ -91,7 +92,7 @@ public class Snake {
     // SELF
     for (int i = 1; i < body.size(); i++) {
       if (body.get(i).x == x && body.get(i).y == y) {
-        System.out.println("Game Over !");
+        System.out.println("Don't eat yourself!");
         return true;
       }
     }
