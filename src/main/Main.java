@@ -12,7 +12,6 @@ public class Main extends JFrame {
 
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     frame.setResizable(false);
-    frame.setLocationRelativeTo(null);
     frame.setFocusable(true);
 
     frame.addKeyListener(new InputHandler());

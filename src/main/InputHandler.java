@@ -37,6 +37,15 @@ public class InputHandler implements KeyListener {
       case KeyEvent.VK_ESCAPE:
         paused = !paused;
         break;
+      case KeyEvent.VK_P:
+        paused = !paused;
+        break;
+      case KeyEvent.VK_SPACE:
+        paused = !paused;
+        break;
+      case KeyEvent.VK_ENTER:
+        paused = !paused;
+        break;
       case KeyEvent.VK_R:
         if (paused) {
           paused = false;
@@ -49,8 +58,19 @@ public class InputHandler implements KeyListener {
         if (paused) {
           System.exit(0);
         }
+        addDirection(Direction.LEFT);
         break;
-
+      case KeyEvent.VK_D:
+        addDirection(Direction.RIGHT);
+        break;
+      case KeyEvent.VK_Z:
+        addDirection(Direction.UP);
+        break;
+      case KeyEvent.VK_S:
+        addDirection(Direction.DOWN);
+        break;
+      default:
+        break;
     }
   }
 

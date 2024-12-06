@@ -7,8 +7,10 @@
  - Build and run:
 ```bash 
 make run
+make duo // for two players
+make solo // for single player
 ```
 ## Upcoming features
- - Pause screen
- - New game modes
- - Two player mode ???
+ - Add multiple lives for duo mode
+ - Add a way to configure game parameters from the game
+    
