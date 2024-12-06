@@ -6,20 +6,20 @@ import java.util.LinkedList;
 
 import main.InputHandler;
 import main.InputHandler.Direction;
+import main.GameSettings;
 
 public class Snake {
   public LinkedList<Drawable> body = new LinkedList<Drawable>();
 
   private Direction direction = Direction.RIGHT;
-  private double speed = 0.9;
+  private double speed = GameSettings.SNAKE_SPEED;
   private long lastMoveTime = System.nanoTime();
   private double moveDelay = 100000000;
-  public final static int START_SIZE = 4;
   private int grow = 0;
 
   public Snake(int x, int y) {
     body.add(new Drawable(x, y, Color.BLUE));
-    for (int i = 0; i < START_SIZE; i++) {
+    for (int i = 0; i < GameSettings.START_SIZE; i++) {
       body.add(new Drawable(x, y, Color.BLUE));
     }
   }
@@ -34,9 +34,9 @@ public class Snake {
   }
 
   public void grow() {
-    grow += 1;
+    grow += GameSettings.SNAKE_GROWTH;
     if (body.size() % 10 == 0) {
-      speed += 0.1;
+      speed += GameSettings.SNAKE_SPEED_INCREMENT;
     }
   }
 
@@ -83,7 +83,9 @@ public class Snake {
 
   private boolean checkCollision(int x, int y, LinkedList<Fruit> fruits) {
     // WALLS
-    if (x < 30 || x > 450 || y < 30 || y > 450) {
+    int border_left = GameSettings.TILE_SIZE;
+    int border_right = GameSettings.MAP_SIZE * GameSettings.TILE_SIZE;
+    if (x < border_left || x > border_right || y < border_left || y > border_right) {
       System.out.println("Stay in the map !");
       return true;
     }

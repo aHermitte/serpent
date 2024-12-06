@@ -5,19 +5,20 @@ import java.awt.event.KeyEvent;
 public class GameSettings {
 
   // Game settings
-  public static int MAP_SIZE = 20;
-  public static int TILE_SIZE = 20;
+  public static int WINDOW_WIDTH = 300;
+  public static int MAP_SIZE = 15;
+  public static int TILE_SIZE = WINDOW_WIDTH / (MAP_SIZE + 2);
   public static int FRUIT_COUNT = 1;
   public static int SNAKE_COUNT = 1;
   public static int START_SIZE = 4;
-  public static int SNAKE_SPEED = 100;
-  public static int SNAKE_SPEED_INCREMENT = 10;
+  public static double SNAKE_SPEED = 0.9;
+  public static double SNAKE_SPEED_INCREMENT = 0.01;
   public static int SNAKE_GROWTH = 1;
 
   //Key bindings
 
   // Player 1 movements
-  public static int P1_UP = KeyEvent.VK_UP;
+  public static final int P1_UP = KeyEvent.VK_UP;
   public static int P1_DOWN = KeyEvent.VK_DOWN;
   public static int P1_LEFT = KeyEvent.VK_LEFT;
   public static int P1_RIGHT = KeyEvent.VK_RIGHT;
@@ -44,7 +45,7 @@ public class GameSettings {
       case 1:
         switch (direction) {
           case 0:
-            P1_UP = key;
+            //P1_UP = key;
             break;
           case 1:
             P1_DOWN = key;

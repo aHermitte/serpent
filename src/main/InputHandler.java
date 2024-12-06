@@ -22,7 +22,7 @@ public class InputHandler implements KeyListener {
   public void keyPressed(KeyEvent e) {
     int key = e.getKeyCode();
     switch (key) {
-      case KeyEvent.VK_UP:
+      case GameSettings.P1_UP:
         addDirection(Direction.UP);
         break;
       case KeyEvent.VK_DOWN:
@@ -48,10 +48,8 @@ public class InputHandler implements KeyListener {
         break;
       case KeyEvent.VK_R:
         if (paused) {
+          gameOver = true;
           paused = false;
-          directions.add(Direction.RIGHT);
-          directions.add(Direction.LEFT);
-          lastDirection = Direction.RIGHT;
         }
         break;
       case KeyEvent.VK_Q:

@@ -1,5 +1,6 @@
 package main;
 
+
 import javax.swing.JFrame;
 
 public class Main extends JFrame {
@@ -11,7 +12,7 @@ public class Main extends JFrame {
     JFrame frame = new JFrame("");
 
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    frame.setResizable(false);
+    frame.setResizable(true);
     frame.setFocusable(true);
 
     frame.addKeyListener(new InputHandler());

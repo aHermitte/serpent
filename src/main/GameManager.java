@@ -11,9 +11,7 @@ import snake.Snake;
 
 public class GameManager {
 
-  public final static int WIDTH = 450;
-  static int border_left, border_right, border_top, border_bottom;
-  public static final int SCALE = 30;
+  private int border_left, border_right;
   private int wall_thickness = 5;
 
   private int score = 0;
@@ -23,15 +21,21 @@ public class GameManager {
   private LinkedList<Fruit> fruits = new LinkedList<Fruit>();
 
   public GameManager() {
-    border_left = SCALE;
-    border_right = SCALE * 15;
-    border_top = SCALE;
-    border_bottom = SCALE * 15;
+    border_left = GameSettings.TILE_SIZE;
+    border_right = GameSettings.MAP_SIZE * GameSettings.TILE_SIZE;
 
-    snake = new Snake(5 * SCALE, 7 * SCALE);
+    snake = new Snake( GameSettings.TILE_SIZE * 5 , GameSettings.TILE_SIZE * 5);
 
-    fruits.add(new Fruit(10 * SCALE, 7 * SCALE));
+    fruits.add(new Fruit( 7 * GameSettings.TILE_SIZE, 7 * GameSettings.TILE_SIZE));
+
+    // Add a fruit on each tile of the map to help map creation
+  //  for (int i = 1; i <= GameSettings.MAP_SIZE; i++) {
+  //    for (int j = 1; j <= GameSettings.MAP_SIZE; j++) {
+  //      fruits.add(new Fruit(i * GameSettings.TILE_SIZE, j * GameSettings.TILE_SIZE));
+  //    }
+  //  }
   }
+
 
   public void update() {
     if (InputHandler.isPaused()) {
@@ -40,11 +44,11 @@ public class GameManager {
     if (InputHandler.isGameOver()) {
       InputHandler.reset();
       score = 0;
-      snake = new Snake(5 * SCALE, 7 * SCALE);
+      snake = new Snake( GameSettings.TILE_SIZE * 5 , GameSettings.TILE_SIZE * 5);
       fruits.forEach(fruit -> fruit.respawn());
     }
     boolean isGameOver = snake.update(fruits);
-    score = snake.body.size() - 1 - Snake.START_SIZE;
+    score = snake.body.size() - 1 - GameSettings.START_SIZE;
     if (score > highscore) {
       highscore = score;
     }
@@ -55,20 +59,19 @@ public class GameManager {
   }
 
   public void draw(Graphics2D g) {
+    fruits.forEach(fruit -> fruit.draw(g));
     g.setColor(Color.WHITE);
 
     g.setStroke(new BasicStroke(wall_thickness));
-    g.drawRect(border_left - wall_thickness, border_top - wall_thickness, border_right + wall_thickness + 4,
-        border_bottom + wall_thickness + 4);
+    g.drawRect(border_left - 3, border_left - 3, border_right + 7, border_right + 7);
 
     g.setFont(new Font("Arial", Font.PLAIN, 20));
     g.setRenderingHint(java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON);
-    g.drawString("Score: " + score, 20, 20);
-    g.drawString("Highscore: " + highscore, 370, 20);
+    g.drawString("Score: " + score, 20, 50 + border_right);
+    g.drawString("Highscore: " + highscore, 20, 75 + border_right);
+
 
     snake.draw(g);
-    fruits.forEach(fruit -> fruit.draw(g));
-
     if (InputHandler.isPaused()) {
       drawPauseMenu(g);
       return;
@@ -77,27 +80,24 @@ public class GameManager {
 
   private void drawPauseMenu(Graphics2D g) {
     g.setColor(Color.BLACK);
-    g.fillRect(border_left - wall_thickness + 50, border_top - wall_thickness + 50, 350 + wall_thickness + 4,
-        350 + wall_thickness + 4);
+    int pause_left = border_left + border_right/8;
+    int pause_right = border_right*6/8;
+    g.fillRect(pause_left, pause_left, pause_right, pause_right);
     g.setColor(Color.WHITE);
     g.setStroke(new BasicStroke(wall_thickness));
+    g.drawRect(pause_left, pause_left, pause_right, pause_right);
 
-    g.drawRect(border_left - wall_thickness + 50, border_top - wall_thickness + 50, 350 + wall_thickness + 4,
-        350 + wall_thickness + 4);
-
-    g.setFont(new Font("Arial", Font.PLAIN, 30));
+    g.setFont(new Font("Arial", Font.PLAIN, 20));
     g.setRenderingHint(java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON);
     if (InputHandler.isGameOver()) {
-      g.drawString("Game Over", 160, 120);
-      g.drawString("ESC : play", 101, 300);
+      g.drawString("Game Over", pause_left + pause_right/2 - 55, pause_left + 50);
+      g.drawString("ESC : play", pause_left +pause_right/9, pause_left + pause_right/2);
 
     } else {
-      g.drawString("Paused", 205, 120);
-      g.drawString("ESC : resume", 101, 300);
+      g.drawString("Paused", pause_left + pause_right/2 - 40, pause_left + 50);
+      g.drawString("ESC : resume", pause_left +pause_right/9, pause_left + pause_right/2);
     }
-    g.drawString("Score: " + score, 110, 200);
-    g.drawString("Highscore: " + highscore, 244, 200);
-    g.drawString("Q : quit", 140, 350);
-    g.drawString("R : start a new game", 140, 400);
+      g.drawString("Q : quit", pause_left +pause_right/9, pause_left + pause_right/2 + 25);
+      g.drawString("R : restart", pause_left +pause_right/9, pause_left + pause_right/2 + 50);
   }
 }

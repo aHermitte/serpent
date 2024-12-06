@@ -9,8 +9,8 @@ import javax.swing.JPanel;
 
 public class GamePanel extends JPanel implements Runnable {
 
-  static final int WIDTH = 500;
-  static final int HEIGHT = 500;
+  static final int WIDTH = (GameSettings.MAP_SIZE + 2) * GameSettings.TILE_SIZE;
+  static final int HEIGHT = (GameSettings.MAP_SIZE + 2) * GameSettings.TILE_SIZE + 100;
   public static Object g;
   private final int FPS = 200;
 
